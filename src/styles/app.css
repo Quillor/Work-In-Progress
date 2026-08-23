@@ -1,0 +1,221 @@
+/* App-level stylesheet.
+   Load order (see main.tsx): flavor.css → flavor-components.css → this file.
+   flavor.css is the token source of truth; everything themable in app pages
+   references its semantic tokens. Tailwind here serves layout utilities and
+   the /canvas board chrome only — never hardcoded colors in app pages. */
+
+@import 'tailwindcss';
+
+/* ── /canvas board chrome tokens (shadcn-style HSL triplets) ──────────────
+   The Canvas board (src/features/canvas) is a dev-only review tool imported
+   from the ethigov reference implementation; its chrome keeps that token
+   dialect (compose as hsl(var(--x)) so /alpha works). These names do not
+   collide with Flavor's semantic tier (--surface-*, --text-*, --accent-bg…). */
+:root {
+  --background: 0 0% 100%;
+  --foreground: 209 64% 13%;
+  --surface-sunken: 44 16% 95%;
+  --card: 0 0% 100%;
+  --card-foreground: 209 64% 13%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 209 64% 13%;
+  --primary: 193 98% 30%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 45 18% 95%;
+  --secondary-foreground: 209 64% 13%;
+  --muted: 44 16% 95%;
+  --muted-foreground: 25 6% 42%;
+  --accent: 189 42% 93%;
+  --accent-foreground: 194 90% 22%;
+  --destructive: 0 72% 48%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 40 14% 87%;
+  --input: 35 13% 55%;
+  --ring: 193 98% 30%;
+  --success: 163 78% 28%;
+  --success-foreground: 0 0% 100%;
+  --warning: 30 85% 30%;
+  --warning-foreground: 0 0% 100%;
+  --info: 200 92% 34%;
+  --info-foreground: 0 0% 100%;
+  --btn-primary: 208 100% 12%;
+  --btn-primary-foreground: 45 30% 96%;
+  --btn-secondary: 0 0% 100%;
+  --btn-secondary-foreground: 208 100% 12%;
+  --btn-secondary-border: 208 100% 12%;
+  --brand-navy: 208 100% 12%;
+  --brand-navy-foreground: 45 30% 96%;
+  --brand-teal: 193 98% 30%;
+  --brand-teal-bright: 187 72% 50%;
+  --brand-green: 170 100% 34%;
+  --radius: 0.625rem;
+}
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-surface-sunken: hsl(var(--surface-sunken));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-success: hsl(var(--success));
+  --color-success-foreground: hsl(var(--success-foreground));
+  --color-warning: hsl(var(--warning));
+  --color-warning-foreground: hsl(var(--warning-foreground));
+  --color-info: hsl(var(--info));
+  --color-info-foreground: hsl(var(--info-foreground));
+  --color-btn-primary: hsl(var(--btn-primary));
+  --color-btn-primary-foreground: hsl(var(--btn-primary-foreground));
+  --color-btn-secondary: hsl(var(--btn-secondary));
+  --color-btn-secondary-foreground: hsl(var(--btn-secondary-foreground));
+  --color-btn-secondary-border: hsl(var(--btn-secondary-border));
+  --color-brand-navy: hsl(var(--brand-navy));
+  --color-brand-navy-foreground: hsl(var(--brand-navy-foreground));
+  --color-brand-teal: hsl(var(--brand-teal));
+  --color-brand-teal-bright: hsl(var(--brand-teal-bright));
+}
+
+@theme {
+  /* Font utilities (font-display / font-mono) resolve to the same faces the
+     Flavor default font pair loads in index.html. */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Space Grotesk', 'Helvetica Neue', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', monospace;
+}
+
+/* Canvas board header surface (ported with the board from the ethigov
+   reference implementation). */
+.brand-navy-surface {
+  background-color: hsl(var(--brand-navy));
+  background-image:
+    radial-gradient(ellipse 80% 80% at 75% -10%, hsl(var(--brand-teal) / 0.28), transparent 60%),
+    radial-gradient(ellipse 60% 70% at 10% 110%, hsl(var(--brand-green) / 0.16), transparent 55%);
+  color: hsl(var(--brand-navy-foreground));
+}
+
+/* ── Site helpers ─────────────────────────────────────────────────────────── */
+.site-container {
+  max-inline-size: 1080px;
+  margin-inline: auto;
+  padding-inline: var(--space-6);
+}
+.fds-icon {
+  inline-size: 1.25em;
+  block-size: 1.25em;
+  flex-shrink: 0;
+}
+
+/* ── App base — Flavor semantic tokens ───────────────────────────────────── */
+@layer base {
+  html {
+    height: 100%;
+  }
+  body,
+  #root {
+    min-height: 100%;
+  }
+  body {
+    margin: 0;
+    background-color: var(--surface-page);
+    color: var(--text-primary);
+    font-family: var(--font-text);
+    font-size: var(--font-size-4);
+    line-height: var(--line-height-4);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+/* ── WIP sunset theme — moodboard override layer ─────────────────────────────
+   Loaded after flavor.css so these win. Palette from the brand moodboard +
+   Color logo: brand brown #BC6315, sunset gradient #FFAC26 → #FFB68A →
+   #FFBABA → #D29CFF, cream paper, plum accent, pill controls. */
+/* attribute-qualified to out-rank flavor.css's :root[data-*] token blocks */
+:root[data-hue][data-sat][data-mode] {
+  /* type — Syne everywhere: 800 headlines, 700 subheads/lead, 400 body */
+  --font-display: 'Syne', system-ui, sans-serif;
+  --font-text: 'Syne', system-ui, sans-serif;
+
+  /* surfaces */
+  --surface-page: #fdeee6;
+  --surface-1: #fff6ef;
+  --surface-tint: #fff6ef;
+
+  /* ink — warm browns */
+  --text-primary: #4a2b12;
+  --text-secondary: #86583a;
+  --text-tertiary: #b08a6e;
+  --text-accent: #bc6315;
+
+  /* accent — brand brown as the working accent; plum as the loud one */
+  --accent-bg: #bc6315;
+  --accent-fg: #ffffff;
+  --accent-subtle: #ffe3c4;
+  --text-on-accent-subtle: #7a3f0c;
+
+  --secondary-bg: #a03fd0;
+  --secondary-text: #a03fd0;
+  --text-on-secondary-subtle: #6e2894;
+
+  /* lines */
+  --border-subtle: #f0dccb;
+  --border-default: #e2c6ad;
+
+  /* moodboard geometry — pill controls, soft cards */
+  --radius-control: 999px;
+  --radius-container: 16px;
+
+  /* the sunset itself, for gradient fills */
+  --gradient-sunset: linear-gradient(135deg, #ffac26 0%, #ffb68a 38%, #ffbaba 60%, #d29cff 100%);
+
+  /* ── interaction states, same warm family (no blue leaks from the Flavor ramp) ──
+     hover = one step deeper, active = two; subtles warm up instead of tinting blue */
+  --accent-bg-hover: #a85512;
+  --accent-bg-active: #8f4408;
+  --accent-subtle-hover: #ffd6a6;
+
+  --secondary-bg-hover: #8f33bd;
+  --secondary-bg-active: #7b28a6;
+  --secondary-subtle: #f5e5fc;
+  --secondary-subtle-hover: #edd3f9;
+
+  --border-interactive: #c9a183;
+  --border-strong: #a97c58;
+  --focus-ring: #bc6315;
+  --text-disabled: #c9ad97;
+}
+
+/* Syne weight mapping (moodboard type spec) */
+@layer base {
+  h1, .wip-headline { font-family: var(--font-display); font-weight: 800; }
+  h2, h3, h4, strong, .wip-subhead, .wip-lead { font-weight: 700; }
+  body { font-weight: 400; }
+}
+
+/* primary buttons wear the sunset gradient (pill, ink text) like the moodboard */
+.fds-button[data-variant='primary'] {
+  background: var(--gradient-sunset);
+  color: #4a2b12;
+  border: none;
+}
+.fds-button[data-variant='primary']:hover { background: var(--gradient-sunset); filter: saturate(1.2) brightness(1.05); }
+.fds-button[data-variant='primary']:active { background: var(--gradient-sunset); filter: saturate(1.2) brightness(0.94); }
+.fds-button[data-variant='primary']:focus-visible,
+.fds-button:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+/* navbar brand image sizing */
+.fds-navbar-brand img { block-size: 28px; inline-size: auto; display: block; }
