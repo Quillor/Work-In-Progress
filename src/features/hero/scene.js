@@ -30,9 +30,7 @@ const smoothstep = (x, a, b) => THREE.MathUtils.smoothstep(x, a, b);
 // ---------- theme-dependent constants (from the production bundle) ----------
 // Palette: timrosenberg.replit.app — bg #07040e · accent #d24ff0 · accent-2 #7a3aee · accent-3 #06b6d4 · accent-light #f2b28d
 const SKY = {
-  // brand-colour sky (violet → magenta → peach, from the logo gradient) for
-  // contrast against the bronze frosted-glass text
-  light: { bg: '#7a3aee', vignette: '#d24ff0', output: '#f2b28d', outputMix: 0.65, edgeIntensity: 0.32 },
+  light: { bg: '#ffac26', vignette: '#d29cff', output: '#ffbaba', outputMix: 0.65, edgeIntensity: 0.32 },
   dark:  { bg: '#005799', vignette: '#800057', output: '#2b6ad4', outputMix: 0.99, edgeIntensity: 0.32 },
 };
 // dark iridescent sheen laid over the sky's output composite
