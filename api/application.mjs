@@ -75,8 +75,10 @@ export async function handleApplication(request, { env = process.env, fetchImpl 
     verification = await response.json();
   } catch { return reply(503, { error: 'Spam verification is temporarily unavailable. Please try again shortly.' }); }
   const allowedHosts = config.origins.flatMap((value) => { try { return [new URL(value).hostname]; } catch { return []; } });
-  // Cloudflare's published testing keys return hostname "example.com" and no action; accept them only in dev log mode.
-  const testingKey = config.devDelivery && verification?.metadata?.result_with_testing_key === true;
+  // Cloudflare's published testing keys return hostname "example.com" and no action; accept them
+  // only when this server itself is configured with a published testing secret (never in production).
+  const usingTestSecret = /^[123]x0+AA$/.test(env.TURNSTILE_SECRET_KEY || '');
+  const testingKey = (config.devDelivery || usingTestSecret) && verification?.metadata?.result_with_testing_key === true;
   if (verification?.success !== true || (!testingKey && (verification.action !== 'apply' || !allowedHosts.includes(verification.hostname)))) return reply(400, { error: 'Please complete verification again and retry your application.' });
   const text = [
     'New Work in Progress community application', '',

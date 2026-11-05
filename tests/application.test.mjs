@@ -44,6 +44,13 @@ test('dev log delivery accepts testing-key verification without contacting the e
   assert.equal(result.status, 200);
   assert.equal(mock.calls.length, 1); // siteverify only — no email call
 });
+test('published Turnstile testing secret accepts testing-key results and still emails', async () => {
+  const testEnv = { ...env, TURNSTILE_SECRET_KEY: '1x0000000000000000000000000000000AA' };
+  const mock = provider({ success: true, hostname: 'example.com', metadata: { result_with_testing_key: true } });
+  const result = await handleApplication(request(), { env: testEnv, ...mock });
+  assert.equal(result.status, 200);
+  assert.equal(mock.calls.length, 2); // siteverify + email
+});
 test('production still rejects testing-key verification results', async () => {
   const mock = provider({ success: true, hostname: 'example.com', metadata: { result_with_testing_key: true } });
   assert.equal((await handleApplication(request(), { env, ...mock })).status, 400);
