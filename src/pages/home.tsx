@@ -23,7 +23,6 @@ export default function HomePage() {
         {/* Shader hero (WebGL) — sky, 3D text + spinner, dot-dissolve into the page */}
         <Hero />
         <section className="site-container" style={{ paddingBlock: 'var(--space-12)', textAlign: 'center' }} aria-labelledby="hero-title">
-          <span className="fds-badge" data-variant="accent"><Icon name="map-pin" solid /> Raleigh, North Carolina</span>
           <h1
             id="hero-title"
             style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--font-size-11)', lineHeight: 'var(--line-height-11)', fontWeight: 800, letterSpacing: '-0.02em', margin: 'var(--space-5) auto var(--space-4)', maxInlineSize: '16ch' }}

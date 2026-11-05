@@ -30,7 +30,9 @@ const smoothstep = (x, a, b) => THREE.MathUtils.smoothstep(x, a, b);
 // ---------- theme-dependent constants (from the production bundle) ----------
 // Palette: timrosenberg.replit.app — bg #07040e · accent #d24ff0 · accent-2 #7a3aee · accent-3 #06b6d4 · accent-light #f2b28d
 const SKY = {
-  light: { bg: '#ffac26', vignette: '#d29cff', output: '#ffbaba', outputMix: 0.65, edgeIntensity: 0.32 },
+  // brand-colour sky (violet → magenta → peach, from the logo gradient) for
+  // contrast against the bronze frosted-glass text
+  light: { bg: '#7a3aee', vignette: '#d24ff0', output: '#f2b28d', outputMix: 0.65, edgeIntensity: 0.32 },
   dark:  { bg: '#005799', vignette: '#800057', output: '#2b6ad4', outputMix: 0.99, edgeIntensity: 0.32 },
 };
 // dark iridescent sheen laid over the sky's output composite
@@ -48,7 +50,8 @@ const SPIN = { chaseSpeed: 0.43, filmSpeed: 0.81, filmScale: 2.05, sheenWhite: 0
   // floor+gain, and `trailPow` sharpens the falloff so fewer pills read as "on" at once
   trailFloor: 0.06, trailGain: 2.06, trailPow: 3.65 };
 // hero layout — where the text and the spinner sit in the banner
-const LAYOUT = { textX: -4.5, textY: -4.8, spinX: 2.9, spinY: 3.4 };
+// text sits vertically centred in the banner; the spinner peeks out behind it, up-right
+const LAYOUT = { textX: -4.5, textY: 0, spinX: 2.9, spinY: 3.4 };
 const GLASS = {
   refractPower: 0.72, chromaticAberration: 0.14, specularStrength: 1.2, loop: 3,
   fresnelSideDir: [-1, 1, -1], lightZ: 0.5,

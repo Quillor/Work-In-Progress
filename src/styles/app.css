@@ -224,7 +224,12 @@
 :root[data-hue][data-sat][data-mode] { --text-tertiary: var(--text-secondary); }
 html { scroll-padding-top: var(--space-6); }
 .community-site { min-height: 100vh; }
+/* The navbar floats over the shader hero, so it needs its own on-brand surface
+   for constant contrast: frosted page-colour glass with a soft hairline. */
 .public-navbar { max-inline-size: 1200px; margin: auto; padding-inline: var(--space-6); min-block-size: 88px; background: transparent; }
+nav.public-navbar { position: sticky; inset-block-start: 0; z-index: 20; max-inline-size: none; background: color-mix(in srgb, var(--surface-page) 86%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-block-end: 1px solid color-mix(in srgb, var(--border-default) 60%, transparent); }
+nav.public-navbar > .fds-navbar-brand { margin-inline-start: max(0px, calc((100% - 1200px) / 2)); }
+nav.public-navbar > .fds-navbar-links { margin-inline-end: max(0px, calc((100% - 1200px) / 2)); }
 .public-navbar .fds-navbar-brand img { inline-size: min(180px, 32vw); block-size: auto; }
 .public-navbar .fds-nav-link, .text-link { color: var(--text-primary); }
 .public-navbar .fds-navbar-links { gap: var(--space-5); }
