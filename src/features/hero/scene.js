@@ -35,8 +35,8 @@ const SKY = {
   light: { bg: '#ffac26', vignette: '#d24ff0', output: '#ecaaff', outputMix: 0.7, edgeIntensity: 0.32 },
   dark:  { bg: '#005799', vignette: '#800057', output: '#2b6ad4', outputMix: 0.99, edgeIntensity: 0.32 },
 };
-// dark iridescent sheen laid over the sky's output composite
-const SKY_IRI = { strength: 0.29, scale: 0.85 };
+// dark iridescent sheen laid over the sky's output composite (off: plain gradient)
+const SKY_IRI = { strength: 0, scale: 0.85 };
 // hero text — light frosted glass
 const TEXT = { specular: 0.88, fresnel: 0.67, shininess: 160, diffuseness: 0.79, fresnelPower: 1.6,
   brightness: 1.35, saturation: 1.3, contrast: 0.85, tintMix: 3, thickMin: 0.5, thickMax: 0.85,
@@ -50,8 +50,8 @@ const SPIN = { chaseSpeed: 0.43, filmSpeed: 0.81, filmScale: 2.05, sheenWhite: 0
   // floor+gain, and `trailPow` sharpens the falloff so fewer pills read as "on" at once
   trailFloor: 0.06, trailGain: 2.06, trailPow: 3.65 };
 // hero layout — where the text and the spinner sit in the banner
-// text sits vertically centred in the banner; the spinner peeks out behind it, up-right
-const LAYOUT = { textX: -4.5, textY: 0, spinX: 2.9, spinY: 3.4 };
+// text sits centred in the banner; the spinner peeks out behind it, up-right
+const LAYOUT = { textX: 0, textY: 0, spinX: 2.9, spinY: 3.4 };
 const GLASS = {
   refractPower: 0.72, chromaticAberration: 0.14, specularStrength: 1.2, loop: 3,
   fresnelSideDir: [-1, 1, -1], lightZ: 0.5,
@@ -59,7 +59,7 @@ const GLASS = {
   dark:  { diffuseness: 0.05, shininess: 100, fresnelPower: 3, saturation: 1.2, brightness: 0.6,  contrast: 0.98, gamma: 1, fresnelStrength: 0.72, tintMix: 1, tintA: '#d24ff0', tintB: '#06b6d4', thickMin: 1, thickMax: 0.4 },
 };
 // hover "boost" multipliers (hero hovered → damped 0→1): pushes the glass + sky well past the stock look
-const BOOST = { refract: 5, chroma: 8, loop: 8, fresnel: 5, brightness: 1.8, saturation: 2.3, specular: 3, swirlAngle: 5, swirlMix: 1, swirlRadius: 2.6, sineAmp: 2.4, sineFreq: 1.8, vignetteRadius: 2.2, wobble: 0 };
+const BOOST = { refract: 5, chroma: 8, loop: 8, fresnel: 5, brightness: 1.8, saturation: 2.3, specular: 3, swirlAngle: 5, swirlMix: 0, swirlRadius: 2.6, sineAmp: 2.4, sineFreq: 1.8, vignetteRadius: 2.2, wobble: 0 };
 const FLARE = { starRays: 6, intensity: 0.7, threshold: 0.99, streakScale: 8, hotspotPower: 32, gate: 0.88, downsample: 0.5, tail: { light: '#7a3aee', dark: '#06b6d4' } };
 const HYPER = { accent: '#7a3aee', stripeA: '#d24ff0', stripeB: '#06b6d4' };
 const OVERLAY = { colors: { dark: '#07040e', light: '#f2b28d' }, pixelSize: 4, radiusScale: 0.9 };
@@ -151,10 +151,11 @@ export class Scene {
   _buildSky() {
     const cfg = this.skyCfg = {
       resolutionScale: 0.3,
+      // swirl/sine/bokeh haze disabled: the sky reads as a plain radial gradient
       vignette: { radius: 0.354, falloff: 1, mix: 1, displace: 0, skew: 0.54, angle: 0 },
-      swirl: { radius: 0.25, angle: 0.1, phase: 0, mix: 0.5 },
-      sine: { mixRadius: 1, frequency: 0.35, amplitude: 1.18, rotation: 0 },
-      bokeh: { radius: 0.754, tilt: 0.5, trackMouse: 0 },
+      swirl: { radius: 0.25, angle: 0.1, phase: 0, mix: 0 },
+      sine: { mixRadius: 1, frequency: 0.35, amplitude: 0, rotation: 0 },
+      bokeh: { radius: 0.016, tilt: 0.5, trackMouse: 0 }, // ≈0 (imperceptible); the pass renders black at exactly 0
       smoothing: 0.1, leaveSmoothing: 0.05,
     };
     const res = this.skyRes = new THREE.Vector2(1, 1);
@@ -174,7 +175,8 @@ export class Scene {
     const noise = new THREE.DataTexture(data, n, n, THREE.RGBAFormat); noise.needsUpdate = true; noise.wrapS = noise.wrapT = THREE.RepeatWrapping;
 
     this.skyPasses = [
-      { name: 'vignette', material: mk(S.vignetteFrag, { uRadius: { value: cfg.vignette.radius }, uFalloff: { value: cfg.vignette.falloff }, uMix: { value: 1 }, uDisplace: { value: 0 }, uSkew: { value: cfg.vignette.skew }, uAngle: { value: 0 }, uEdgeIntensity: { value: C.edgeIntensity }, uVignetteColor: { value: this.skyColors.vignette.clone() }, uClearColor: { value: this.skyColors.bg.clone() } }) },
+      // uPos override pins the gradient centre (no pointer swim — plain gradient)
+      { name: 'vignette', material: mk(S.vignetteFrag, { uRadius: { value: cfg.vignette.radius }, uFalloff: { value: cfg.vignette.falloff }, uMix: { value: 1 }, uDisplace: { value: 0 }, uSkew: { value: cfg.vignette.skew }, uAngle: { value: 0 }, uEdgeIntensity: { value: C.edgeIntensity }, uVignetteColor: { value: this.skyColors.vignette.clone() }, uClearColor: { value: this.skyColors.bg.clone() }, uPos: { value: new THREE.Vector2(0.5, -0.1) } }) },
       { name: 'swirl', material: mk(S.swirlFrag, { uRadius: { value: cfg.swirl.radius }, uAngle: { value: cfg.swirl.angle }, uPhase: { value: 0 }, uMix: { value: cfg.swirl.mix } }) },
       { name: 'sine', material: mk(S.sineFrag, { uMixRadius: { value: cfg.sine.mixRadius }, uFrequency: { value: cfg.sine.frequency }, uAmplitude: { value: cfg.sine.amplitude }, uRotation: { value: 0 } }) },
       { name: 'bokeh', material: mk(S.bokehFrag, { tBlueNoise: { value: noise }, uBlueNoiseResolution: { value: new THREE.Vector2(n, n) }, uAmount: { value: 3.125 * cfg.bokeh.radius }, uTilt: { value: cfg.bokeh.tilt }, uPos: { value: new THREE.Vector2(0.5, 0.5) }, uTrackMouse: { value: 0 } }) },
@@ -489,7 +491,7 @@ export class Scene {
       // caps bite on narrow or short screens
       const view = this.viewportAt(g.position[2]);
       const viewW = view.width, viewH = view.height;
-      const fit = Math.min(1, (0.84 * viewW) / (g.geoWidth * g.scale), (0.72 * viewH) / (g.geoHeight * g.scale)); // 0.84/0.72: leaves room for the extrusion's perspective spread
+      const fit = Math.min(1, (0.76 * viewW) / (g.geoWidth * g.scale), (0.62 * viewH) / (g.geoHeight * g.scale)); // 0.76/0.62: leaves room for the extrusion's perspective spread and entry rotation
       g.mesh.scale.setScalar(g.scale * fit);
       // anchor at the designed x/y, but clamp so the mesh's edges stay ≥6% inside the view
       const halfW = (g.geoWidth * g.scale * fit) / 2, edge = 0.44 * viewW;

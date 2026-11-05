@@ -45,12 +45,8 @@ export function validateApplication(body) {
     data[name] = value;
   }
   if (!EMAIL.test(data.email) || /[\r\n]/.test(data.name) || !UUID.test(data.requestId)) return null;
-  if (data.linkedin) {
-    try {
-      const url = new URL(data.linkedin);
-      if (url.protocol !== 'https:' || !['linkedin.com', 'www.linkedin.com'].includes(url.hostname) || url.username || url.password || url.port || !url.pathname.startsWith('/in/')) return null;
-    } catch { return null; }
-  }
+  // linkedin is free text (a link or a profile name); the control-character
+  // screen above is the only constraint.
   return data;
 }
 
@@ -67,7 +63,7 @@ export async function handleApplication(request, { env = process.env, fetchImpl 
   try { body = await readLimitedBody(request); } catch (error) { return reply(error.message === 'too-large' ? 413 : 400, { error: 'We could not read your application. Please check your answers and try again.' }); }
   if (body && typeof body.website === 'string' && body.website.trim()) return reply(400, { error: 'Please use the application form.' });
   const data = validateApplication(body);
-  if (!data) return reply(400, { error: 'Check all required answers, your email, and your LinkedIn profile URL if provided (https://www.linkedin.com/in/…). Then try again.' });
+  if (!data) return reply(400, { error: 'Check all required answers and your email address, then try again.' });
   let verification;
   try {
     const response = await fetchImpl('https://challenges.cloudflare.com/turnstile/v0/siteverify', {

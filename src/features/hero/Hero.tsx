@@ -72,6 +72,11 @@ export default function Hero() {
     };
   }, []);
 
-  // Empty by design: the 3D text/spinner are drawn on the canvas behind this rect.
-  return <section ref={sectionRef} aria-hidden="true" style={{ height: '100vh' }} />;
+  // Near-empty by design: the 3D text/spinner are drawn on the canvas behind this
+  // rect; the only DOM content is a decorative scroll hint.
+  return (
+    <section ref={sectionRef} aria-hidden="true" className="hero-canvas">
+      <div className="scroll-hint">Scroll</div>
+    </section>
+  );
 }

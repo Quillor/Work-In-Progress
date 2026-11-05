@@ -102,7 +102,7 @@ export default function ApplicationForm() {
       <label htmlFor="app-location">Where are you based?<input id="app-location" className="fds-input" name="location" autoComplete="address-level2" required placeholder="Raleigh, Durham, Chapel Hill, or nearby" /></label>
       <label htmlFor="app-work">What do you do, and what are you exploring with AI?<textarea id="app-work" className="fds-textarea" name="work" required rows={3} /></label>
       <label htmlFor="app-interest">Why would you like to join?<textarea id="app-interest" className="fds-textarea" name="interest" required rows={3} /></label>
-      <label htmlFor="app-linkedin">LinkedIn profile <span className="optional-label">(optional)</span><input id="app-linkedin" className="fds-input" name="linkedin" type="url" inputMode="url" placeholder="https://www.linkedin.com/in/you" /></label>
+      <label htmlFor="app-linkedin">LinkedIn profile <span className="optional-label">(optional)</span><input id="app-linkedin" className="fds-input" name="linkedin" type="text" placeholder="A link or your profile name" /></label>
       <div className="form-trap" aria-hidden="true"><label htmlFor="app-website">Leave this field empty<input id="app-website" name="website" tabIndex={-1} autoComplete="off" /></label></div>
       <p id="application-privacy" className="form-note">Your application is emailed to Tim at hello@timrosenberg.com so he can review it and contact you about joining. Cloudflare Turnstile helps prevent spam. We don’t automatically add you to Slack or a mailing list.</p>
       <div ref={widgetContainer} className="verification-widget" />

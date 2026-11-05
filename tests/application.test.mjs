@@ -22,10 +22,10 @@ test('success requires verification and provider acceptance, with fixed recipien
   assert.match(email.text, /Durham/); assert.match(email.text, /No automated Slack invitation/);
   assert.equal(mock.calls[1].options.headers['Idempotency-Key'], `wip-application-${valid.requestId}`);
 });
-for (const [name, patch] of [ ['missing name', { name: ' ' }], ['invalid email', { email: 'invalid' }], ['header injection', { email: 'a@example.com\r\nBcc:x@example.com' }], ['empty answer', { interest: ' ' }], ['fake LinkedIn domain', { linkedin: 'https://linkedin.com.evil.test/in/me' }], ['unsafe URL', { linkedin: 'javascript:alert(1)' }], ['invalid request ID', { requestId: 'anything' }], ['array field', { work: ['test'] }], ['honeypot', { website: 'spam' }] ]) {
+for (const [name, patch] of [ ['missing name', { name: ' ' }], ['invalid email', { email: 'invalid' }], ['header injection', { email: 'a@example.com\r\nBcc:x@example.com' }], ['empty answer', { interest: ' ' }], ['invalid request ID', { requestId: 'anything' }], ['array field', { work: ['test'] }], ['honeypot', { website: 'spam' }] ]) {
   test(`rejects ${name} before contacting providers`, async () => { const mock = provider(); const response = await handleApplication(request({ ...valid, ...patch }), { env, ...mock }); assert.equal(response.status, 400); assert.equal(mock.calls.length, 0); });
 }
-test('accepts a valid optional LinkedIn profile', async () => { const mock = provider(); const result = await handleApplication(request({ ...valid, linkedin: 'https://www.linkedin.com/in/test-person' }), { env, ...mock }); assert.equal(result.status, 200); });
+test('accepts any optional LinkedIn text', async () => { const mock = provider(); const result = await handleApplication(request({ ...valid, linkedin: 'Test Person' }), { env, ...mock }); assert.equal(result.status, 200); });
 test('rejects cross-origin submissions', async () => { const mock = provider(); const response = await handleApplication(request(valid, { headers: { Origin: 'https://evil.example' } }), { env, ...mock }); assert.equal(response.status, 403); assert.equal(mock.calls.length, 0); });
 test('rejects large streamed bodies and malformed JSON', async () => { assert.equal((await handleApplication(request('x'.repeat(17000)), { env })).status, 413); assert.equal((await handleApplication(request('{'), { env })).status, 400); });
 for (const verification of [{ success: false }, { success: true, action: 'other', hostname: 'community.example' }, { success: true, action: 'apply', hostname: 'evil.example' }]) {

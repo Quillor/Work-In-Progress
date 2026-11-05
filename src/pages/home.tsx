@@ -27,12 +27,12 @@ export default function HomePage() {
             id="hero-title"
             style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--font-size-11)', lineHeight: 'var(--line-height-11)', fontWeight: 800, letterSpacing: '-0.02em', margin: 'var(--space-5) auto var(--space-4)', maxInlineSize: '16ch' }}
           >
-            Stop waiting to be ready.
+            The community for AI mentorship.
           </h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--font-size-5)', lineHeight: 'var(--line-height-5)', maxInlineSize: '58ch', margin: '0 auto var(--space-7)' }}>
-            Nobody&rsquo;s finished. Nobody&rsquo;s arrived. And that&rsquo;s exactly why this is exciting. Work in
-            Progress is Raleigh&rsquo;s community for people who refuse to wait until they feel ready — a place to
-            believe in yourself louder, grow in public, and push each other further than you&rsquo;d ever push alone.
+            Work in Progress brings Triangle professionals together to learn AI and grow their careers with it.
+            Share what you&rsquo;re building, get guidance from mentors who&rsquo;ve been there, and turn new skills
+            into your next role, project, or promotion — with people in your corner the whole way.
           </p>
           <div id="join" style={{ display: 'flex', gap: 'var(--space-3)', justifyContent: 'center', flexWrap: 'wrap' }}>
             <a className="fds-button" data-variant="primary" data-size="lg" href="#apply">Come build with us <Icon name="arrow-right" /></a>
