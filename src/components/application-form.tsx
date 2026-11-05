@@ -97,14 +97,13 @@ export default function ApplicationForm() {
   }
 
   return (
-    <form className="application-form" onSubmit={submit} onChange={() => { requestId.current = null; }} aria-describedby="application-privacy">
+    <form className="application-form" onSubmit={submit} onChange={() => { requestId.current = null; }}>
       <div className="form-row"><label htmlFor="app-name">Your name<input id="app-name" className="fds-input" name="name" autoComplete="name" required /></label><label htmlFor="app-email">Email address<input id="app-email" className="fds-input" name="email" type="email" autoComplete="email" required /></label></div>
       <label htmlFor="app-location">Where are you based?<input id="app-location" className="fds-input" name="location" autoComplete="address-level2" required placeholder="Raleigh, Durham, Chapel Hill, or nearby" /></label>
       <label htmlFor="app-work">What do you do, and what are you exploring with AI?<textarea id="app-work" className="fds-textarea" name="work" required rows={3} /></label>
       <label htmlFor="app-interest">Why would you like to join?<textarea id="app-interest" className="fds-textarea" name="interest" required rows={3} /></label>
       <label htmlFor="app-linkedin">LinkedIn profile <span className="optional-label">(optional)</span><input id="app-linkedin" className="fds-input" name="linkedin" type="text" placeholder="A link or your profile name" /></label>
       <div className="form-trap" aria-hidden="true"><label htmlFor="app-website">Leave this field empty<input id="app-website" name="website" tabIndex={-1} autoComplete="off" /></label></div>
-      <p id="application-privacy" className="form-note">Your application is emailed to Tim at hello@timrosenberg.com so he can review it and contact you about joining. Cloudflare Turnstile helps prevent spam. We don’t automatically add you to Slack or a mailing list.</p>
       <div ref={widgetContainer} className="verification-widget" />
       {availability === 'loading' && <p role="status" className="form-note">Checking application availability…</p>}
       <button className="fds-button" data-variant="primary" data-size="lg" type="submit" disabled={availability !== 'ready' || !token || status === 'sending' || status === 'success'}>{status === 'sending' ? 'Sending application…' : status === 'success' ? 'Application sent' : 'Send application'}</button>
