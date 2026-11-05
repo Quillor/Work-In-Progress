@@ -29819,7 +29819,7 @@
 }
 
 :root[data-sat="muted"][data-bg="media"] {
-  --media-image: url('/photography/hero.jpg');
+  --media-image: none;
   --surface-page: var(--flavor-transparent);
   --surface-1: var(--flavor-white);
   --surface-2: var(--flavor-white);
@@ -29865,7 +29865,7 @@
 }
 
 :root[data-bg="media"] {
-  --media-image: url('/photography/hero.jpg');
+  --media-image: none;
   --surface-page: var(--flavor-transparent);
   --surface-1: var(--flavor-white);
   --surface-2: var(--flavor-white);
@@ -29911,7 +29911,7 @@
 }
 
 :root[data-sat="bold"][data-bg="media"] {
-  --media-image: url('/photography/hero.jpg');
+  --media-image: none;
   --surface-page: var(--flavor-transparent);
   --surface-1: var(--flavor-white);
   --surface-2: var(--flavor-white);
@@ -31014,7 +31014,7 @@
 }
 
 :root[data-contrast="aaa"][data-sat="muted"][data-bg="media"] {
-  --media-image: url('/photography/hero.jpg');
+  --media-image: none;
   --surface-page: var(--flavor-transparent);
   --surface-1: var(--flavor-white);
   --surface-2: var(--flavor-white);
@@ -31060,7 +31060,7 @@
 }
 
 :root[data-contrast="aaa"][data-bg="media"] {
-  --media-image: url('/photography/hero.jpg');
+  --media-image: none;
   --surface-page: var(--flavor-transparent);
   --surface-1: var(--flavor-white);
   --surface-2: var(--flavor-white);
@@ -31106,7 +31106,7 @@
 }
 
 :root[data-contrast="aaa"][data-sat="bold"][data-bg="media"] {
-  --media-image: url('/photography/hero.jpg');
+  --media-image: none;
   --surface-page: var(--flavor-transparent);
   --surface-1: var(--flavor-white);
   --surface-2: var(--flavor-white);
@@ -32209,7 +32209,7 @@
 }
 
 :root[data-mode="dark"][data-sat="muted"][data-bg="media"] {
-  --media-image: url('/photography/hero.jpg');
+  --media-image: none;
   --surface-page: var(--flavor-transparent);
   --surface-1: var(--flavor-white);
   --surface-2: var(--flavor-white);
@@ -32255,7 +32255,7 @@
 }
 
 :root[data-mode="dark"][data-bg="media"] {
-  --media-image: url('/photography/hero.jpg');
+  --media-image: none;
   --surface-page: var(--flavor-transparent);
   --surface-1: var(--flavor-white);
   --surface-2: var(--flavor-white);
@@ -32301,7 +32301,7 @@
 }
 
 :root[data-mode="dark"][data-sat="bold"][data-bg="media"] {
-  --media-image: url('/photography/hero.jpg');
+  --media-image: none;
   --surface-page: var(--flavor-transparent);
   --surface-1: var(--flavor-white);
   --surface-2: var(--flavor-white);
@@ -33404,7 +33404,7 @@
 }
 
 :root[data-mode="dark"][data-contrast="aaa"][data-sat="muted"][data-bg="media"] {
-  --media-image: url('/photography/hero.jpg');
+  --media-image: none;
   --surface-page: var(--flavor-transparent);
   --surface-1: var(--flavor-white);
   --surface-2: var(--flavor-white);
@@ -33450,7 +33450,7 @@
 }
 
 :root[data-mode="dark"][data-contrast="aaa"][data-bg="media"] {
-  --media-image: url('/photography/hero.jpg');
+  --media-image: none;
   --surface-page: var(--flavor-transparent);
   --surface-1: var(--flavor-white);
   --surface-2: var(--flavor-white);
@@ -33496,7 +33496,7 @@
 }
 
 :root[data-mode="dark"][data-contrast="aaa"][data-sat="bold"][data-bg="media"] {
-  --media-image: url('/photography/hero.jpg');
+  --media-image: none;
   --surface-page: var(--flavor-transparent);
   --surface-1: var(--flavor-white);
   --surface-2: var(--flavor-white);

@@ -404,6 +404,7 @@ export class Scene {
     if (o.renderOrder !== undefined) mesh.renderOrder = o.renderOrder;
     o.geo.computeBoundingBox(); const bb = o.geo.boundingBox; u.uTintLocalYRange.value.set(bb.min.y, bb.max.y);
     const geoWidth = Math.max(bb.max.x - bb.min.x, 1e-4); // for fit-to-view scaling
+    const geoHeight = Math.max(bb.max.y - bb.min.y, 1e-4);
     // group(position) > group(axisTilt) > group(animated rot) > group(-axisTilt) > mesh
     const tilt = (o.axisTilt || [0, 0, 0]).map(deg);
     const group = new THREE.Group(); group.position.set(...o.position); group.visible = false;
@@ -411,7 +412,7 @@ export class Scene {
     const gRot = new THREE.Group(); gRot.rotation.set(...o.beforeRot.map(deg));
     const gUntilt = new THREE.Group(); gUntilt.rotation.set(-tilt[0], -tilt[1], -tilt[2]);
     gUntilt.add(mesh); gRot.add(gUntilt); gTilt.add(gRot); group.add(gTilt); this.scene.add(group);
-    const g = { ...o, geoWidth, mat, mesh, group, gRot, before: o.beforeRot.map(deg), rot: o.rot.map(deg), after: o.afterRot ? o.afterRot.map(deg) : null, wasVisible: null, frames: 0 };
+    const g = { ...o, geoWidth, geoHeight, mat, mesh, group, gRot, before: o.beforeRot.map(deg), rot: o.rot.map(deg), after: o.afterRot ? o.afterRot.map(deg) : null, wasVisible: null, frames: 0 };
     this._applyGlassTheme(g);
     return g;
   }
@@ -478,17 +479,21 @@ export class Scene {
       // position: pinned to the section centre, moving at syncFactor × scroll speed
       const s = this.sectionRect(g.section);
       const floatY = g.float && !this.reduceMotion ? 0.18 * Math.sin(1.2 * this.time) + 0.06 * Math.sin(0.6 * this.time) : 0;
-      g.group.position.y = this.worldYFromDocY(s.top + s.height / 2, g.position[2], g.syncFactor) + g.position[1] + floatY;
       // narrow viewports: shrink + pull x in so the models stay in frame (production tunes per breakpoint)
-      // fit-to-view: cap the mesh's world width at 92% of the frustum width at
-      // its depth (keeps the WIP text inside the viewport on every device),
-      // easing its x-anchor toward centre as the cap bites on narrow screens
-      const viewW = this.viewportAt(g.position[2]).width;
-      const fit = Math.min(1, (0.84 * viewW) / (g.geoWidth * g.scale)); // 0.84: leaves room for the extrusion's perspective spread
+      // fit-to-view: cap the mesh's world width at 92% of the frustum width — and its
+      // height at 72% of the frustum height — at its depth (keeps the WIP text inside
+      // the first viewport on every device), easing its anchors toward centre as the
+      // caps bite on narrow or short screens
+      const view = this.viewportAt(g.position[2]);
+      const viewW = view.width, viewH = view.height;
+      const fit = Math.min(1, (0.84 * viewW) / (g.geoWidth * g.scale), (0.72 * viewH) / (g.geoHeight * g.scale)); // 0.84/0.72: leaves room for the extrusion's perspective spread
       g.mesh.scale.setScalar(g.scale * fit);
-      // anchor at the designed x, but clamp so the mesh's edges stay ≥4% inside the view
+      // anchor at the designed x/y, but clamp so the mesh's edges stay ≥6% inside the view
       const halfW = (g.geoWidth * g.scale * fit) / 2, edge = 0.44 * viewW;
       g.group.position.x = clamp(g.position[0] * fit, halfW - edge, edge - halfW);
+      const halfH = (g.geoHeight * g.scale * fit) / 2, edgeY = 0.44 * viewH;
+      const offsetY = clamp(g.position[1] * fit, halfH - edgeY, edgeY - halfH);
+      g.group.position.y = this.worldYFromDocY(s.top + s.height / 2, g.position[2], g.syncFactor) + offsetY + floatY;
       // rotation: before → rot as the section enters, then → after over the next viewport
       const { entry, after } = this.sectionProgress(g.section);
       let x = lerp(g.before[0], g.rot[0], entry), y = lerp(g.before[1], g.rot[1], entry), z = lerp(g.before[2], g.rot[2], entry);

@@ -1,0 +1,5 @@
+# Local references and review artifacts never belong in a deployment.
+design-system/
+.env
+.env.*
+!.env.example
