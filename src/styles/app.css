@@ -329,3 +329,17 @@ a:focus-visible, summary:focus-visible, input:focus-visible, textarea:focus-visi
 .scroll-hint::after { content: ''; inline-size: 10px; block-size: 10px; border-inline-end: 2px solid currentColor; border-block-end: 2px solid currentColor; transform: rotate(45deg); animation: scroll-hint-bob 2.2s ease-in-out infinite; }
 @keyframes scroll-hint-bob { 0%, 100% { transform: translateY(0) rotate(45deg); opacity: 0.5; } 50% { transform: translateY(7px) rotate(45deg); opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .scroll-hint::after { animation: none; } }
+
+/* Headline block under the shader hero. The display size scales with the
+   viewport so the longest word ("mentorship.") fits a 320px phone; a fixed
+   60px Syne line overflowed and widened the whole mobile layout viewport. */
+.home-hero { padding-block: var(--space-12); text-align: center; }
+.home-hero-title { font-family: var(--font-display); font-size: clamp(26px, calc(10.4vw - 4.5px), var(--font-size-11)); line-height: 1.05; font-weight: 800; letter-spacing: -0.02em; margin: var(--space-5) auto var(--space-4); max-inline-size: 16ch; overflow-wrap: break-word; }
+.home-hero-lead { color: var(--text-secondary); font-size: var(--font-size-5); line-height: var(--line-height-5); max-inline-size: 58ch; margin: 0 auto var(--space-7); }
+@media (max-width: 560px) {
+  .home-hero { padding-block: var(--space-9); }
+  .home-hero-lead { font-size: var(--font-size-4); line-height: var(--line-height-4); }
+}
+/* Safety net: nothing should ever widen the page sideways on phones. `clip`
+   (not `hidden`) keeps the sticky navbar working. */
+html, body { overflow-x: clip; }

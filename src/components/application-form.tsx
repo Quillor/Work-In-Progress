@@ -47,7 +47,8 @@ export default function ApplicationForm() {
           sitekey: config.siteKey,
           action: 'apply',
           theme: 'light',
-          size: 'flexible',
+          // 'flexible' has a 300px minimum; very narrow phones get the compact widget instead
+          size: widgetContainer.current.clientWidth < 300 ? 'compact' : 'flexible',
           callback: (value: string) => { setToken(value); setMessage(''); },
           'expired-callback': () => setToken(''),
           'error-callback': () => { setToken(''); setMessage('Verification could not complete. Refresh the page or email Tim directly.'); },

@@ -22,14 +22,11 @@ export default function HomePage() {
       <main id="main-content">
         {/* Shader hero (WebGL) — sky, 3D text + spinner, dot-dissolve into the page */}
         <Hero />
-        <section className="site-container" style={{ paddingBlock: 'var(--space-12)', textAlign: 'center' }} aria-labelledby="hero-title">
-          <h1
-            id="hero-title"
-            style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--font-size-11)', lineHeight: 'var(--line-height-11)', fontWeight: 800, letterSpacing: '-0.02em', margin: 'var(--space-5) auto var(--space-4)', maxInlineSize: '16ch' }}
-          >
+        <section className="site-container home-hero" aria-labelledby="hero-title">
+          <h1 id="hero-title" className="home-hero-title">
             The community for AI mentorship.
           </h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--font-size-5)', lineHeight: 'var(--line-height-5)', maxInlineSize: '58ch', margin: '0 auto var(--space-7)' }}>
+          <p className="home-hero-lead">
             Work in Progress brings Triangle professionals together to learn AI and grow their careers with it.
             Share what you&rsquo;re building, get guidance from mentors who&rsquo;ve been there, and turn new skills
             into your next role, project, or promotion — with people in your corner the whole way.
