@@ -142,7 +142,12 @@ export class Scene {
   sectionProgress(name) {
     const s = this.sectionRect(name); if (!s) return { entry: 1, after: 0 };
     const vh = this.vh(), i = (this.scrollTop() + vh - s.top) / vh;
-    return { entry: clamp(i, 0, 1), after: clamp(i - 1, 0, 1) };
+    // Short landscape screens (phones turned sideways): the sticky navbar is a big
+    // share of the height, so the entry turn would sit ~60° unfinished at the top of
+    // the page. The hero is the first section, so there treat the entry as done and
+    // let the text start face-on; the scroll-away turn (`after`) is unchanged.
+    const landscapeShort = vh < 500 && innerWidth > vh;
+    return { entry: landscapeShort ? 1 : clamp(i, 0, 1), after: clamp(i - 1, 0, 1) };
   }
 
   // ============================================================
