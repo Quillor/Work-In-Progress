@@ -343,3 +343,25 @@ a:focus-visible, summary:focus-visible, input:focus-visible, textarea:focus-visi
 /* Safety net: nothing should ever widen the page sideways on phones. `clip`
    (not `hidden`) keeps the sticky navbar working. */
 html, body { overflow-x: clip; }
+
+/* ── Mobile polish ───────────────────────────────────────────────────────── */
+/* Anchor jumps land below the sticky navbar (88px desktop, ~100px phones). */
+html { scroll-padding-top: calc(88px + var(--space-6)); }
+/* Stacked paragraphs need air (the base reset zeroes their margins). */
+.community-about p:not(.section-label) + p,
+.application-intro > p + p { margin-block-start: var(--space-4); }
+.section-heading { margin-block-end: var(--space-5); }
+/* Whole event card is the tap target, not just the one-line title. */
+.event-card { position: relative; }
+.event-details h3 a::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+.event-card:has(a:hover) { border-color: var(--border-strong); }
+.event-card:has(a:focus-visible) { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.event-details h3 a:focus-visible { outline: none; }
+@media (max-width: 760px) {
+  html { scroll-padding-top: calc(100px + var(--space-6)); }
+  /* 44px touch targets in the navbar */
+  .public-navbar .fds-nav-link { display: inline-flex; align-items: center; min-block-size: 44px; }
+  .public-navbar .fds-button[data-size='sm'] { block-size: 44px; font-size: 14px; }
+  /* nothing under 13px on phones */
+  .event-time, .event-location, .events-list-note { font-size: 14px; }
+}
